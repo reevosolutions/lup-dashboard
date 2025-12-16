@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "title": "Bienvenido al Panel LUP",
+    "description": "Este es un panel multilingüe."
+  },
+  "Components": {
+    "Greeting": {
+      "hello": "¡Hola desde un componente!"
+    }
+  }
+}

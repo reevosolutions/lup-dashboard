@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "title": "Welcome to LUP Dashboard",
+    "description": "This is a multi-language dashboard."
+  },
+  "Components": {
+    "Greeting": {
+      "hello": "Hello from a component!"
+    }
+  }
+}
