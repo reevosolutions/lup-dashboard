@@ -20,13 +20,15 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@config/*": ["./src/config/*"],
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@providers/*": ["./src/providers/*"],
       "@store/*": ["./src/store/*"],
+      "@styles/*": ["./src/styles/*"],
       "@lib/*": ["./src/lib/*"],
-      "@i18n/*": ["./src/i18n/*"]
+      "@i18n/*": ["./src/i18n/*"],
+      "@/*": ["./src/*"],
     }
   },
   "include": [
