@@ -28,8 +28,12 @@
       "@styles/*": ["./src/styles/*"],
       "@lib/*": ["./src/lib/*"],
       "@i18n/*": ["./src/i18n/*"],
-      "@/*": ["./src/*"],
-    }
+      "@/*": ["./src/*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/levelup-sdk/typings"
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -39,7 +43,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "./node_modules/levelup-sdk/typings/**/*.d.ts"
   ],
   "exclude": ["node_modules"]
 }
