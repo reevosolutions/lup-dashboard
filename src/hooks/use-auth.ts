@@ -31,7 +31,8 @@ export const useAuth = () => {
 
   // Permission check placeholder - to be implemented fully with permission data
   const hasPermission = useCallback(
-    (permissionName: string | string[]) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_permissionName: string | string[]) => {
       if (isMaster) return true;
       // TODO: Implement actual permission checking logic when permissions are in state
       return false;

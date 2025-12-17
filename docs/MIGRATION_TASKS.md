@@ -20,7 +20,7 @@ Use this checklist to track the progress of the migration from `lup-frontend` to
 
 ## Phase 2: Core Infrastructure
 - [ ] **Routing & Middleware**
-    - [ ] Update `middleware.ts` to handle protected routes using `AuthenticationManager`.
+    - [ ] Update `proxy.ts` to handle protected routes using `AuthenticationManager`.
     - [ ] Implement `PublicOnly` and `Protected` route guards.
 - [ ] **App Configuration**
     - [ ] Port `AppConfigManager` logic (Locations, Settings).

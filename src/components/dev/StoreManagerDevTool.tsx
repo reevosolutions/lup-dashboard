@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DexieAdapter from "@lib/cache-manager/adapters/dexie-adapter";
 import { useAppSelector } from "@store/hooks";
 import { selectIsAuthenticated } from "@store/features/auth/auth-slice";
@@ -19,7 +19,7 @@ export const StoreManagerDevTool: React.FC = () => {
   const isAuth = useAppSelector(selectIsAuthenticated);
   const adapter = DexieAdapter.getInstance();
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     setLoading(true);
     try {
       const data = await adapter.getStats();
@@ -30,7 +30,7 @@ export const StoreManagerDevTool: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [adapter]);
 
   const handleClearCache = async () => {
     if (!confirm("Are you sure? This will wipe all local data.")) return;
@@ -44,7 +44,7 @@ export const StoreManagerDevTool: React.FC = () => {
     // Poll every 5 seconds for dev visibility
     const interval = setInterval(fetchStats, 5000);
     return () => clearInterval(interval);
-  }, [isAuth]); // Refresh when auth state changes
+  }, [isAuth, fetchStats]); // Refresh when auth state changes
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">

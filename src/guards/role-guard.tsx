@@ -3,7 +3,6 @@
 import { useAuth } from "@hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { ROUTES } from "@config/routes.config";
 
 interface RoleGuardProps {
   children: React.ReactNode;

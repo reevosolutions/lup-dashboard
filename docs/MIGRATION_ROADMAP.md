@@ -45,7 +45,7 @@ The primary goal is to move from a **Client-Heavy** architecture to a **Server-F
 ### Phase 2: Core Infrastructure (🚧 Next)
 *   **App Config**: Refactor `AppConfigManager` to be lighter.
 *   **Data Fetching**: Replace Dexie caching with React Query / Server Actions where appropriate.
-*   **Middleware**: Implement robust route guards in `middleware.ts`.
+*   **Middleware**: Implement robust route guards in `proxy.ts` (formerly `middleware.ts`).
 *   **Localization**: Port `next-intl` setup fully.
 
 ### Phase 3: UI System

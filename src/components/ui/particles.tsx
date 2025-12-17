@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useCallback,
 } from "react"
 
 import { cn } from "@/lib/utils"
@@ -62,6 +63,18 @@ function hexToRgb(hex: string): number[] {
   const green = (hexInt >> 8) & 255
   const blue = hexInt & 255
   return [red, green, blue]
+}
+
+const remapValue = (
+  value: number,
+  start1: number,
+  end1: number,
+  start2: number,
+  end2: number
+): number => {
+  const remapped =
+    ((value - start1) * (end2 - start2)) / (end1 - start1) + start2
+  return remapped > 0 ? remapped : 0
 }
 
 type Circle = {
@@ -237,18 +250,6 @@ export const Particles: React.FC<ParticlesProps> = ({
       const circle = circleParams()
       drawCircle(circle)
     }
-  }
-
-  const remapValue = (
-    value: number,
-    start1: number,
-    end1: number,
-    start2: number,
-    end2: number
-  ): number => {
-    const remapped =
-      ((value - start1) * (end2 - start2)) / (end1 - start1) + start2
-    return remapped > 0 ? remapped : 0
   }
 
   const animate = () => {

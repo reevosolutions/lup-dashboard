@@ -53,6 +53,7 @@
     "firebase": "^12.7.0",
     "framer-motion": "^12.23.26",
     "input-otp": "^1.4.2",
+    "js-cookie": "^3.0.5",
     "levelup-sdk": "^2.2.46",
     "lucide-react": "^0.560.0",
     "motion": "^12.23.26",
