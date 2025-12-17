@@ -12,7 +12,8 @@ export default function HomePage() {
       <Greeting />
       <div className="flex gap-4 mt-8">
         <Link href="/" locale="en" className="text-blue-500 hover:underline">English</Link>
-        <Link href="/" locale="es" className="text-blue-500 hover:underline">Español</Link>
+        <Link href="/" locale="ar" className="text-blue-500 hover:underline">العربية</Link>
+        <Link href="/" locale="fr" className="text-blue-500 hover:underline">Français</Link>
       </div>
     </div>
   );
