@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { env } from "@config/env";
+import { config } from "@config/index";
 
 export class AuthenticationManager {
   private static instance: AuthenticationManager;
@@ -19,7 +19,7 @@ export class AuthenticationManager {
 
   public saveTokens(token: string, refreshToken?: string) {
     // Save token with secure flag if in production
-    const secure = env.NODE_ENV === "production";
+    const secure = config.runtime.dev.isProd;
     
     Cookies.set(this.TOKEN_KEY, token, { secure, sameSite: "strict" });
     if (refreshToken) {

@@ -1,4 +1,4 @@
-import { env } from "@config/env";
+import { config } from "@config/index";
 import { useAuth } from "./use-auth";
 import { useMemo } from "react";
 
@@ -6,8 +6,8 @@ export const useDev = () => {
   const { user } = useAuth();
 
   const isDev = useMemo(() => {
-    const isDevEnv = env.NODE_ENV === "development";
-    const isMasterUser = user?.email === env.NEXT_PUBLIC_MASTER_EMAIL;
+    const isDevEnv = config.runtime.dev.isDev;
+    const isMasterUser = user?.email === config.app.dev.master.email;
     
     return isDevEnv || isMasterUser;
   }, [user]);

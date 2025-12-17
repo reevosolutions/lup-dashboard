@@ -1,14 +1,6 @@
 import { env } from "./env";
 
-export const appConfig = {
-  name: env.NEXT_PUBLIC_APP_NAME,
-  env: env.NODE_ENV,
-  port: env.PORT,
-  defaults: {
-    currency: "DA",
-    dateTimeFormat: "DD/MM/YYYY HH:mm",
-    dateFormat: "DD/MM/YYYY",
-  },
+export const structureConfig = {
   sdk: {
     baseURL: env.NEXT_PUBLIC_API_BASE_URL,
     appId: env.NEXT_PUBLIC_API_APP_ID,

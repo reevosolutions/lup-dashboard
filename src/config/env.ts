@@ -3,6 +3,7 @@ import { z } from "zod";
 const envSchema = z.object({
   // App
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  PORT: z.string().transform((val) => parseInt(val, 10)).default(4001),
   NEXT_PUBLIC_APP_NAME: z.string().default("Lup Dashboard"),
 
   // API / SDK
@@ -26,6 +27,7 @@ const envSchema = z.object({
 
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
+  PORT: parseInt(process.env.PORT || "4001", 10) || 4001,
   NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
   NEXT_PUBLIC_API_BASE_URL: process.env.NODE_ENV === "production"
     ? process.env.NEXT_PUBLIC_API_BASE_URL_PROD

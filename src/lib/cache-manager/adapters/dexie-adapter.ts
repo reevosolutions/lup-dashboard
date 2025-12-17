@@ -37,7 +37,7 @@ export class LevelupDatabase extends Dexie {
  */
 export class DexieAdapter {
   private db: LevelupDatabase;
-  private static instance: DexieAdapter;
+  private static instance: DexieAdapter;  
   private encryptionManager: EncryptionManager;
 
   private constructor() {

@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { env } from "@config/env";
+import { config } from "@config/index";
 
 /**
  * EncryptionManager
@@ -16,7 +16,7 @@ export class EncryptionManager {
   private constructor() {
     // Use a fallback key for development if env var is missing
     // In production, this should strictly come from env
-    this.SECRET_KEY = env.NEXT_PUBLIC_LOCAL_STORAGE_SECRET || "dev-fallback-secret-key-change-me";
+    this.SECRET_KEY = config.app.security.localStorage.secret || "dev-fallback-secret-key-change-me";
   }
 
   public static getInstance(): EncryptionManager {
