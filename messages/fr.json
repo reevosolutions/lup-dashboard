@@ -1,0 +1,11 @@
+{
+  "HomePage": {
+    "title": "Bienvenue sur le tableau de bord LUP",
+    "description": "Ceci est un tableau de bord multilingue."
+  },
+  "Components": {
+    "Greeting": {
+      "hello": "Bonjour depuis un composant !"
+    }
+  }
+}
