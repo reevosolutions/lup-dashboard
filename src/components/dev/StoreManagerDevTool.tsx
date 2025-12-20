@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import DexieAdapter from "@lib/cache-manager/adapters/dexie-adapter";
+import DexieAdapter from "@lib/managers/cache-manager/adapters/dexie-adapter";
 import { useAppSelector } from "@store/hooks";
 import { selectIsAuthenticated } from "@store/features/auth/auth-slice";
 

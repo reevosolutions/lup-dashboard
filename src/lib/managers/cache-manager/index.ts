@@ -1,4 +1,4 @@
-import DexieAdapter from "./adapters/dexie-adapter";
+import DexieAdapter, { AuthEntity, AuthEntityType } from "./adapters/dexie-adapter";
 
 /**
  * CacheManager
@@ -40,6 +40,26 @@ export class CacheManager {
 
   public async clear() {
     return this.adapter.clear();
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                    AUTH                                    */
+  /* -------------------------------------------------------------------------- */
+  async getCurrentAuthObject<T extends AuthEntityType>(entity: T): Promise<AuthEntity<T> | null> {
+    const item = await this.adapter.db.current.get(entity);
+    return (item as AuthEntity<T>) || null;
+  }
+
+  async setCurrentAuthObject<T extends AuthEntityType>(entity: T, data: AuthEntity<T>) {
+    await this.adapter.db.current.put({ ...data, entity });
+  }
+
+  async unsetCurrentAuthObject<T extends AuthEntityType>(entity: T) {
+    await this.adapter.db.current.delete(entity);
+  }
+
+  async clearCurrentAuthData() {
+    await this.adapter.db.current.clear();
   }
 }
 

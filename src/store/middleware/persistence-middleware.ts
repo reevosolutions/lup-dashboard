@@ -1,5 +1,5 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import DexieAdapter from "@lib/cache-manager/adapters/dexie-adapter";
+import DexieAdapter from "@lib/managers/cache-manager/adapters/dexie-adapter";
 import { setCredentials, clearCredentials } from "@store/features/auth/auth-slice";
 import type { RootState } from "@store/index";
 

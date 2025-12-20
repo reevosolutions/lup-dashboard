@@ -1,0 +1,234 @@
+// import ImageUploader from '@/components/jsm/experimental/image.uploader';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
+import { useSdk } from '@/hooks/use-sdk';
+import { cn } from '@/lib/utils';
+import FileUploader, { PREDEFINED_ACCEPTED_FILES } from '@features/storage/form-components/file.uploader';
+import { debounce } from 'lodash';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
+import { useTranslation } from 'react-i18next';
+
+function useOutsideClick(
+  ref: RefObject<HTMLDivElement | null>,
+  handler: (event: any) => void,
+) {
+  useEffect(() => {
+    const listener = (event: any) => {
+      // Do nothing if clicking ref's element or descendent elements
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
+
+      handler(event);
+    };
+
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
+
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }, [ref, handler]); // Re-run if ref or handler changes
+}
+
+export const ToolbarButton: React.FC<{
+  isActive: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}> = ({ children, isActive, onClick }) => {
+  return (
+    <button
+      onClick={(event) => {
+        event.preventDefault();
+        onClick();
+      }}
+      className={cn(
+        'jsm-editor-button rounded-sm p-1',
+        isActive
+          ? 'jsm-editor-button-active bg-slate-100 text-slate-800'
+          : 'jsm-editor-button-inactive text-slate-500',
+      )}
+      tabIndex={-1} // Prevents focus on the trigger button
+    >
+      {children}
+    </button>
+  );
+};
+
+export const ColorButton: React.FC<{
+  value: string;
+  onChange: (value: string) => void;
+  children?: (value: string) => React.ReactNode;
+}> = ({ children, value, onChange }) => {
+  const [color, setColor] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(popoverRef, () => {
+    if (isOpen) setIsOpen(false);
+  });
+
+  useEffect(() => {
+    const debouncedSetColor = debounce(() => {
+      setColor(value);
+    }, 200);
+
+    debouncedSetColor();
+
+    return () => {
+      debouncedSetColor.cancel();
+    };
+  }, [value]);
+
+  const handleColorChange = useCallback(
+    (color: string) => {
+      setColor(color);
+      onChange(color);
+    },
+    [onChange],
+  );
+
+  return (
+    <>
+      <Popover open={isOpen}>
+        <PopoverTrigger
+          onClick={() => setIsOpen(true)}
+          tabIndex={-1} // Prevents focus on the trigger button
+        >
+          {children ? (
+            children(color)
+          ) : (
+            <span
+              className="block border-slate-100 border rounded-sm w-7 h-7"
+              style={{ backgroundColor: value || '#222' }}
+            ></span>
+          )}
+        </PopoverTrigger>
+        <PopoverContent ref={popoverRef} className="w-fit">
+          <HexColorPicker color={color} onChange={handleColorChange} />
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+};
+
+export const ImageButton: React.FC<{
+  children?: React.ReactNode;
+  onChange: (value: Jsm.Core.Utils.Common.FileAttribute | null) => void;
+}> = ({ children, onChange }) => {
+  const { t: tLabel } = useTranslation('label');
+  const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const sdk = useSdk();
+  useOutsideClick(popoverRef, () => {
+    if (isOpen) setIsOpen(false);
+  });
+  const [url, setUrl] = useState('');
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger
+        asChild
+        // onClick={() => setIsOpen(true)}
+      >
+        <span
+          className={cn(
+            'block jsm-editor-button rounded-sm p-1 cursor-pointer',
+            'jsm-editor-button-inactive text-slate-500',
+          )}
+        >
+          {children}
+        </span>
+      </DialogTrigger>
+      <DialogContent className="w-full sm:max-w-[425px]">
+        <DialogTitle>Insert image</DialogTitle>
+        <Tabs defaultValue="url" className="mx-auto w-full min-w-80">
+          <TabsList className="mx-auto w-full">
+            <TabsTrigger value="url" className="flex-grow">
+              {tLabel('URL')}
+            </TabsTrigger>
+            <TabsTrigger value="upload" className="flex-grow">
+              {tLabel('Upload')}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="upload">
+            <div className="w-full">
+              <FileUploader
+                multiple={false}
+                accept={PREDEFINED_ACCEPTED_FILES.images}
+                autoUpload
+                defaultValue={null}
+                onChange={(value) => {
+                  if (!value?.dbRecord?._id) {
+                    onChange(null);
+                    return;
+                  }
+                  onChange({
+                    id: value?.dbRecord?._id,
+                    url: sdk.storage.utils.getImageUrl(value?.dbRecord?._id, {
+                      width: 1200,
+                    }),
+                  });
+                  setIsOpen(false);
+                }}
+                viewMode='inline'
+              />
+            </div>
+          </TabsContent>
+          <TabsContent value="url">
+            <div className="py-6">
+              <div className="flex flex-col gap-1">
+                <Label htmlFor="url" className="text-start">
+                  URL
+                </Label>
+                <Input
+                  id="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="col-span-3"
+                  placeholder="https://"
+                />
+              </div>
+              <DialogFooter className="mt-6">
+                <Button
+                  disabled={!url}
+                  type="submit"
+                  onClick={(e) => {
+                    onChange({
+                      id: null,
+                      url,
+                    });
+                    setUrl('');
+                    setIsOpen(false);
+                  }}
+                >
+                  {tLabel('insert')}
+                </Button>
+              </DialogFooter>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  );
+};
