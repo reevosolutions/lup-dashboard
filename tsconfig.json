@@ -21,6 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "@config/*": ["./src/config/*"],
+      "@constants/*": ["./src/constants/*"],
       "@components/*": ["./src/components/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@providers/*": ["./src/providers/*"],

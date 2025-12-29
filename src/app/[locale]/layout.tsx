@@ -6,6 +6,7 @@ import {getMessages} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '../../i18n/routing';
 import StoreProvider from "@providers/store-provider";
+import { SlotProvider } from "@lib/jsm-slot";
 import { DevTools } from "@components/dev/dev-tools";
 
 const geistSans = Geist({
@@ -48,8 +49,10 @@ export default async function RootLayout({
       >
         <StoreProvider>
           <NextIntlClientProvider messages={messages}>
-            {children}
-            <DevTools />
+            <SlotProvider>
+              {children}
+              <DevTools />
+            </SlotProvider>
           </NextIntlClientProvider>
         </StoreProvider>
       </body>

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { initSdkForClient } from "@lib/init-sdk";
+import { initSdkForLevelupClientApp } from "@hooks/use-sdk";
+
 import CacheManager from "@lib/managers/cache-manager";
 import EncryptionManager from "@lib/managers/encryption-manager";
 import LevelupSdk from "levelup-sdk";
-import { userHasRoleGroupOrAbove } from "@lib/utils";
-
+import { userHasRoleGroupOrAbove } from "@lib/utils/auth";
 export default class AuthenticationManager {
   cache: CacheManager;
   crypto: EncryptionManager;
@@ -32,7 +32,7 @@ export default class AuthenticationManager {
     /**
      * Init SDK
      */
-    this.sdk = initSdkForClient();
+    this.sdk = initSdkForLevelupClientApp();
   }
 
   async saveAccessToken(token: string) {
@@ -56,7 +56,7 @@ export default class AuthenticationManager {
   async loadRefreshToken() {
     const encryptedToken = window?.localStorage.getItem("refresh.token") || null;
     if (!encryptedToken) return null;
-    return this.crypto.decrypt(encryptedToken);
+    return this.crypto.decrypt<string>(encryptedToken);
   }
 
   async clearTokens() {
